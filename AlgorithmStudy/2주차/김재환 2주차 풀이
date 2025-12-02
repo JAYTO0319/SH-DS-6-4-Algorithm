@@ -1,0 +1,149 @@
+class Solution {
+    public String solution(String my_string, int n) {
+        // ✅ 내가 생각한 문제 이해  
+        // “문자열 my_string 에 담긴 각 문자마다,  
+        //   그 문자를 n번 반복해서 이어 붙인 새로운 문자열을 반환하라” 라는 문제입니다.
+        // 예를 들어 my_string = "hello", n = 3 이면  
+        // 각 문자를 3번씩: hhh + eee + lll + lll + ooo → "hhheeellllllooo" 라고 나와요.
+
+        StringBuilder answer = new StringBuilder();  
+        // StringBuilder 사용한 이유:  
+        // 문자열을 반복해서 붙일 때 String 대신 StringBuilder 쓰면 성능 좋고,  
+        // 코드도 깔끔해져서 중급자감 있게 보인다고 생각했어요.
+
+        // 각 문자를 하나씩 조회하면서 반복문 돌려요
+        for (int i = 0; i < my_string.length(); i++) {
+            char c = my_string.charAt(i);  
+            // 지금 i번째 문자 c 에 대해, n번 반복해서 붙여야 해요.
+            for (int j = 0; j < n; j++) {
+                answer.append(c);
+            }
+        }
+
+        // StringBuilder 에 모인 내용을 String 으로 변환해서 리턴
+        return answer.toString();
+    }
+}
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
+public class Main {
+
+    public static void main(String[] args) throws IOException {
+
+        /*
+         * [문제 이해 메모]
+         * - 사실 문제 자체는 되게 단순한데, 이상하게 입력이 문자열로 온다는 점이 조금 헷갈렸다.
+         * - N을 굳이 왜 줄까? 하고 잠깐 고민했는데… 그냥 신경 안 쓰는 게 맞는 문제였다.
+         * - 숫자 하나하나 합치면 끝. 근데 나는 이런 문제일수록 실수가 잘 나와서,
+         *   'char - '0'' 방식이 맞는지 잠깐 손가락으로 다시 세보고 시작했다.
+         */
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        // N은 사실 결과 계산에는 필요 없지만,
+        // 입력 흐름을 깨지 않기 위해서라도 일단 받아둔다.
+        int N = Integer.parseInt(br.readLine().trim());
+
+        // 숫자가 쭉 이어진 문자열
+        String numStr = br.readLine().trim();
+
+        int sum = 0;
+
+        /*
+         * [작은 고민 기록]
+         * - 굳이 split이나 mapToInt 같은 거 쓰면 오히려 과해보인다고 생각했다.
+         * - 요 문제는 그냥 문자 반복문이 제일 무난하고, 실수도 적다.
+         * - 다만 charAt(i)로 가져오면 char 타입이라 그냥 더하면 ASCII라서,
+         *   '0'을 빼서 정수화하는 기본기를 한 번 더 되새기고 싶었다.
+         */
+
+        for (int i = 0; i < N; i++) {
+            // 그냥 (int)(numStr.charAt(i)) - 48 이런 식으로도 되지만…
+            // 문자 '0'을 빼는 게 더 명확해서 그걸로 갔다.
+            sum += numStr.charAt(i) - '0';
+        }
+
+        // 결과 출력. 더 이상 할 것도 없다.
+        System.out.println(sum);
+
+        /*
+         * [정리 메모]
+         * - 문제는 심플했는데, 그래도 이렇게 간단한 문제일수록
+         *   변환 과정 하나를 습관처럼 점검하는 연습이 은근히 도움이 된다.
+         * - 예전에 char → int 변환 실수해서 삽질 많이 한 걸 떠올리며…
+         */
+    }
+}
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        /*
+         * 제가 선택한 방식: Set이나 HashSet 사용하는 게 훨씬 쉽하고 빠르지만,
+         * 이번엔 “배열 정렬 + 이중 포인터(or 이진탐색)” 방식으로 풀었습니다.
+         *  
+         * “쉽게 풀고 싶으신 분은” → HashSet 하나 만들어서 듣보잡 여부 체크하면 거의 10줄도 채 안 돼요.
+         * “저처럼 조금 색다른 길을 보고 싶으신 분은” → 아래 방식 같이 정렬 + 탐색 구조로 가보는 것도 좋습니다.
+         */
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] first = br.readLine().split(" ");
+        int N = Integer.parseInt(first[0]);  // 듣도 못한 사람 수
+        int M = Integer.parseInt(first[1]);  // 보도 못한 사람 수
+
+        String[] unheard = new String[N];
+        for (int i = 0; i < N; i++) {
+            unheard[i] = br.readLine().trim();
+        }
+
+        String[] unseen = new String[M];
+        for (int i = 0; i < M; i++) {
+            unseen[i] = br.readLine().trim();
+        }
+
+        // 제가 선택한 방식: 배열 두 개 정렬하고, 이중 포인터로 공통 원소 찾아내기
+        // 왜 이렇게 했냐면… HashSet은 정말 흔하잖아요. 그냥 배열 + 정렬이면
+        // 메모리 사용도 직관적이고, 탐색 과정을 제어할 수 있어서 좋더라고요.
+        Collections.sort(java.util.Arrays.asList(unheard));
+        Collections.sort(java.util.Arrays.asList(unseen));
+
+        ArrayList<String> result = new ArrayList<>();
+        int i = 0, j = 0;
+        while (i < N && j < M) {
+            int cmp = unheard[i].compareTo(unseen[j]);
+            if (cmp == 0) {
+                result.add(unheard[i]);
+                i++;
+                j++;
+            } else if (cmp < 0) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        // 출력
+        System.out.println(result.size());
+        Collections.sort(result);  // 문제에서 “알파벳 순서대로” 출력 요구하므로
+        for (String name : result) {
+            System.out.println(name);
+        }
+
+        /*
+         * 마무리 생각:
+         * - 이 방법은 시간복잡도 O((N+M) log(N+M)) + O(N+M) 탐색으로 충분히 빠릅니다.
+         * - 만약 N, M가 더 크고 메모리 제약이 심했다면 HashSet 방식이 더 직관적일 수 있어요.
+         * - 하지만 저는 정렬 + 투포인터 방식으로 “조금 덜 쓰는 길”을 골라봤고,
+         *   그 덕분에 비교 연산, 포인터 이동 같은 걸 다시 복습하게 됐네요.
+         */
+    }
+}
+

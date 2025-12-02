@@ -1,0 +1,113 @@
+import sys
+import bisect
+input = sys.stdin.readline
+
+N = int(input())
+arr = list(map(int, input().split()))
+arr.sort()
+
+M = int(input())
+queries = list(map(int, input().split()))
+
+res = []
+
+for q in queries:
+    left = bisect.bisect_left(arr, q)   # q 이상이 처음 나오는 위치
+    right = bisect.bisect_right(arr, q) # q 초과가 처음 나오는 위치
+    res.append(str(right - left))       # 등장 개수 = 구간 길이
+
+print(" ".join(res))
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashSet;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        // ------------------------------------------------------------
+        // [문제 요약]
+        // N개의 문자열으로 이루어진 집합 S가 주어지고,
+        // 그 다음 M개의 문자열 중에서 S에 포함되어 있는 문자열이
+        // 몇 개인지 출력하는 문제.
+        // ------------------------------------------------------------
+        // - 문자열 개수 N, 검사 문자열 개수 M (각각 ≤ 10,000) → 비교 횟수 많음.
+        // - 하나하나 S의 모든 원소와 비교하면 시간 낭비 가능성 있음.
+        // - 따라서 효율적으로 “문자열 존재 여부”를 빠르게 판단할 수 있는
+        //   자료구조(HashSet 등)를 사용해야 함.
+        // ------------------------------------------------------------
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String[] nm = br.readLine().split(" ");
+        int N = Integer.parseInt(nm[0]);
+        int M = Integer.parseInt(nm[1]);
+
+        // S 집합을 HashSet으로 생성.
+        // HashSet은 삽입/탐색이 평균 O(1)이므로
+        // 대량의 문자열 존재 여부 체크에 적합하다.
+        HashSet<String> set = new HashSet<>();
+
+        // S에 포함된 N개의 문자열 입력받아 저장
+        for (int i = 0; i < N; i++) {
+            String s = br.readLine();
+            set.add(s);
+        }
+
+        int count = 0;
+        // 검사할 M개의 문자열 중 집합 S에 포함된 것이 있는지 반복 확인
+        for (int i = 0; i < M; i++) {
+            String t = br.readLine();
+            // contains 메소드는 내부적으로 해시 기반 탐색이므로 빠르다
+            if (set.contains(t)) {
+                count++;
+            }
+        }
+
+        // 결과 출력: S에 포함된 문자열 갯수
+        System.out.println(count);
+    }
+}
+
+import sys
+
+# ------------------------------------------------------------
+# [문제 요약]
+# 정수 10개를 입력받고, 각각을 42로 나눈 나머지를 구한다.
+# 이때 "서로 다른 나머지"가 몇 개 등장하는지 세는 문제.
+# ------------------------------------------------------------
+# - 나머지 연산의 범위(0 ~ 41)
+# - 중복 제거 방식(set 또는 boolean 배열)
+# - 입력 크기/범위를 보고 자료구조 선택하는 감각
+# ------------------------------------------------------------
+
+input = sys.stdin.readline
+
+# 42로 나눈 나머지는 항상 0~41 사이
+# Java에서는 boolean 배열을 썼지만,
+# 파이썬에서는 set이 더 자연스럽고 간단하다.
+# (물론 boolean 리스트로도 가능하지만 set이 직관적)
+seen = set()
+
+# 입력은 10줄로 고정
+for _ in range(10):
+    num = int(input())         # 문자열 입력 → 정수 변환
+    r = num % 42               # 나머지 계산
+    seen.add(r)                # set에 넣으면 자동으로 중복 제거됨
+
+# 최종적으로 "서로 다른 나머지" 개수 출력
+print(len(seen))
+
+# ------------------------------------------------------------
+# 공부내용 정리
+# 1) 파이썬에서 중복 제거는 set이 가장 간단하고 명확하다.
+#    (Java의 boolean 배열을 파이썬으로 그대로 옮기면 오히려 불편)
+#
+# 2) input() 대신 sys.stdin.readline()을 쓰는 패턴은
+#    온라인 저지 환경에서 속도 안정성을 높인다.
+#
+# 3) 파이썬의 set은 해시 기반이라 삽입/조회가 평균 O(1)로 빠르며,
+#    "서로 다른 값들"을 처리할 때 가장 많이 쓰는 자료구조다.
+#
+# 4) 구현 문제에서는, 문제의 범위(나머지 0~41, 입력 10개)를 보고
+#    가장 간단한 자료구조를 선택하는 감각이 중요하다.
+#

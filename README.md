@@ -1,4 +1,3 @@
-신한DS 4기 6회차 알고리즘 스터디
 
 Algorithm Study의 **"필독"** 
 

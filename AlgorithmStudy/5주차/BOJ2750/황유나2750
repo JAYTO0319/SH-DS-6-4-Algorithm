@@ -1,0 +1,7 @@
+n = int(input())
+num = []
+for _ in range(n):
+    num.append(int(input()))
+
+for n in sorted(num):
+    print(n)

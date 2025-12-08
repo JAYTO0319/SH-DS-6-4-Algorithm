@@ -1,0 +1,21 @@
+from bisect import bisect_left
+import sys
+
+input = sys.stdin.readline
+n, m = map(int, input().split())
+
+a = []
+for _ in range(n):
+    a.append(int(input()))
+b = sorted(a)
+
+d_list = []
+for _ in range(m):
+    d_list.append(int(input()))
+
+for d in d_list:
+    idx = bisect_left(b, d) # 배열 b에서 d가 첫번째로 등장하는 위치
+    if idx >= len(b) or b[idx] != d:
+        print(-1) # 존재하지 않음
+    else :
+        print(idx)

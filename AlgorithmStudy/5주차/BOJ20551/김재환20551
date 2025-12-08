@@ -1,0 +1,36 @@
+import sys
+input = sys.stdin.readline
+
+# ---------------------- 입력 처리 ----------------------
+N, M = map(int, input().split())
+A = [int(input().rstrip()) for _ in range(N)]
+
+# ---------------------- 정렬 → B 배열 (실제로는 A를 정렬) ----------------------
+A.sort()
+
+# ---------------------- 이분 탐색 함수: lower_bound (처음 등장 위치) ----------------------
+def lower_bound(arr, target):
+    lo = 0
+    hi = len(arr) - 1
+    res = -1  # 위치 저장 변수, 찾지 못하면 -1 유지
+
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if arr[mid] < target:
+            lo = mid + 1
+        else:
+            # arr[mid] >= target 이면
+            hi = mid - 1
+            if arr[mid] == target:
+                res = mid
+    return res
+
+# ---------------------- 질의 처리 ----------------------
+# 각 질의 D에 대해 lower_bound로 위치 찾기, 없으면 -1
+out = []
+for _ in range(M):
+    D = int(input().rstrip())
+    idx = lower_bound(A, D)
+    out.append(str(idx))
+
+print("\n".join(out))

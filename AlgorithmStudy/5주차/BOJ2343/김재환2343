@@ -1,0 +1,40 @@
+import sys
+input = sys.stdin.readline
+
+# ---------------------- 입력 처리 ----------------------
+N, M = map(int, input().split())
+lessons = list(map(int, input().split()))
+
+# ---------------------- 탐색 범위 설정 ----------------------
+# 블루레이 하나가 가질 수 있는 최소 길이:
+# → 어떤 블루레이든 가장 긴 강의를 담을 수 있어야 하므로
+left = max(lessons)
+# 블루레이 하나가 가질 수 있는 최대 길이:
+# → 모든 강의를 하나에 담는다면 이 길이면 충분
+right = sum(lessons)
+
+ans = right  # 정답 후보 (최솟값을 찾아야 함)
+
+# ---------------------- 이분 탐색 ----------------------
+while left <= right:
+    mid = (left + right) // 2  # 현재 시도해보는 블루레이 크기
+    current_sum = 0            # 현재 블루레이에 담은 강의 합 길이
+    required = 1               # 필요한 블루레이 수 (최초 하나)
+
+    # 강의 순서대로 블루레이에 담아보기
+    for t in lessons:
+        if current_sum + t > mid:
+            # 이 블루레이에 담을 수 없으면 새 블루레이 사용
+            required += 1
+            current_sum = 0
+        current_sum += t
+
+    # 만약 required 블루레이 ≤ M 이면, mid 크기로 가능
+    if required <= M:
+        ans = mid           # mid는 답이 될 수 있는 후보
+        right = mid - 1     # 더 작은 크기도 가능한지 탐색 (최솟값)
+    else:
+        left = mid + 1      # mid가 너무 작아서 블루레이가 모자람 → 크기 키우기
+
+# ---------------------- 출력 ----------------------
+print(ans)

@@ -1,0 +1,36 @@
+package week5;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Set;
+import java.util.TreeSet;
+
+public class Main1181 {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int N = Integer.parseInt(br.readLine());
+        Set<String> set = new TreeSet<>();
+        for(int i=0;i<N;i++) {
+        	set.add(br.readLine());
+        }
+        String[] arr = set.toArray(new String[0]);
+        
+        while(N-->1) {
+        	for(int j=0;j<arr.length-1;j++) {
+        		String tmp = "";
+        		if(arr[j].length()>arr[j+1].length()) {
+        			tmp = arr[j];
+        			arr[j] = arr[j+1];
+        			arr[j+1] = tmp;
+        		}
+        	}
+        }
+        StringBuilder sb = new StringBuilder();
+        for(String s:arr) {
+        	sb.append(s);
+        	sb.append("\n");
+        }
+        System.out.println(sb);
+    }
+}

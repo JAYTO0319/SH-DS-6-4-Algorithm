@@ -1,0 +1,55 @@
+package week5;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+public class Main1920 {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		Map<String, Integer> map = new LinkedHashMap<>();
+		while(N-->0) {
+			map.put(st.nextToken(), 1);
+		}
+		
+		int M = Integer.parseInt(br.readLine());
+		st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		while(M-->0) {
+			Integer value = map.get(st.nextToken());
+			sb.append(value==null?0:1);
+			sb.append("\n");
+		}
+		System.out.println(sb);
+	}
+	
+	public static void main_1(String[] args) throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int N = Integer.parseInt(br.readLine());
+		Set<Integer> set = new HashSet<>();
+		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+		while(N-->0) {
+			set.add(Integer.parseInt(st.nextToken()));
+		}
+		int M = Integer.parseInt(br.readLine());
+		st = new StringTokenizer(br.readLine(), " ");
+		StringBuilder sb = new StringBuilder();
+		while(M-->0) {
+			int num = Integer.parseInt(st.nextToken());
+			if(set.contains(num)) {
+				sb.append(1);
+				sb.append("\n");
+			} else {
+				sb.append(0);
+				sb.append("\n");
+			}
+		}
+		System.out.println(sb);
+	}
+}

@@ -1,0 +1,35 @@
+n, m = map(int, input().split())
+lectures = list(map(int, input().split()))
+
+start = max(lectures)         # 가능한 블루레이 크기 중 최소값
+end = sum(lectures)           # 가능한 블루레이 크기 중 최대값
+result = 0                    # 최종 블루레이 크기의 최소값
+while start <= end:
+    mid = (start + end) // 2  # 블루레이 크기 후보
+    total = 0                 # 각 블루레이에 녹화된 동영상의 크기 (<= 블루레이 크기)
+    count = 0                 # 필요한 블루레이 개수
+    for leng in lectures:
+        total += leng
+        if total >= mid:
+            if total == mid:
+                total = 0
+            else:
+                total = leng  # 녹화된 동영상의 크기가 블루레이 크기를 초과하면 다음 블루레이에 녹화
+            count += 1
+        if count >= m and total != 0: # 갖고있는 블루레이를 다 사용했는데도 녹화할 동영상이 남아있으면 X
+            # 어차피 유효하지 않으므로 (m + 1)번째 블루레이에 때려넣기
+            total = 0
+            count += 1
+            break
+    # 마지막 블루레이에 녹화된 동영상의 크기가 블루레이의 크기보다 작은 경우
+    if total != 0 and total < mid:
+        count += 1
+    
+    # 필요한 블루레이 개수가 갖고있는 블루레이 개수보다 작으면 O -> 저장하면서 최적의 해(최소값) 찾기
+    if count <= m:
+        result = mid
+        end = mid - 1
+    else:
+        start = mid + 1
+
+print(result)

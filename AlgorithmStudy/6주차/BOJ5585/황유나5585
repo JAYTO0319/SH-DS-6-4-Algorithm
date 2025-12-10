@@ -4,9 +4,7 @@ total = 0                        # 거스름돈의 개수
 for m in money:
     # 남은 거스름돈이 0원이 되면 종료
     if n == 0: break
-    
-    count = n // m       # 현재 거스름돈의 개수
-    if count > 0:
-        n %= (m * count) # 현재 남은 거스름돈
-        total += count
+        
+    total += n // m
+    n %= m
 print(total)

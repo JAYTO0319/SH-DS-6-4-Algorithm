@@ -1,0 +1,19 @@
+#문서, 찾으려는 단어
+#찾으려는 단어가 문서에 중복되지 않게 등장하는 총 개수
+#문서와 찾으려는 단어를 비교=>find()
+#일치하면 카운트 세고, 문서에서 찾으려는 단어까지 제거 후 반복
+
+import sys
+
+words = sys.stdin.readline().strip()
+find_word =  sys.stdin.readline().strip()
+count = 0
+while True:
+    if words.find(find_word) == -1:
+        break
+    else:
+        i = words.find(find_word)
+        count +=1
+        words = words[i+len(find_word):]
+
+print(count)

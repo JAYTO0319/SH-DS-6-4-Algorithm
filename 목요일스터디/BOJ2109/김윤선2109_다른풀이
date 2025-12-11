@@ -1,0 +1,26 @@
+import sys
+
+n = int(sys.stdin.readline().strip())
+lec_ls = []
+
+# p: 강연비, d: 마감일
+for _ in range(n):
+    p, d = map(int, sys.stdin.readline().split())
+    lec_ls.append((p, d))
+
+# 강연비 비싼 것부터
+lec_ls.sort(key=lambda x: x[0], reverse=True)
+
+schedule = [0] * 10001
+
+total = 0
+
+for p, d in lec_ls:
+    #d에서 내려가면서 비어있는 곳에 
+    for day in range(d, 0, -1):
+        if schedule[day] == 0:  
+            schedule[day] = p
+            total += p
+            break
+
+print(total)

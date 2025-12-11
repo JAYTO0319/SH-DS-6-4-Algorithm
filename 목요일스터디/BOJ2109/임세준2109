@@ -1,0 +1,24 @@
+import sys
+import heapq
+
+T = int(sys.stdin.readline())
+qs = []
+n = 0
+for _ in range(T):
+  c,d = map(int,sys.stdin.readline().split())
+  heapq.heappush(qs,((-d,d),c))
+  if c>n:
+    n = c
+
+r = 0
+scs = []
+while n>0:
+  while qs and qs[0][0][1]==n:
+    sc = heapq.heappop(qs)[1]
+    heapq.heappush(scs,(-sc,sc))
+    if not qs:
+      break
+  if scs:
+    r += heapq.heappop(scs)[1]
+  n-=1
+print(r)

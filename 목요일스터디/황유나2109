@@ -1,5 +1,7 @@
 from heapq import heapify, heappush, heappop
+import sys
 
+input = sys.stdin.readline
 n = int(input())
 lec = [] # (day, pay)
 result = []

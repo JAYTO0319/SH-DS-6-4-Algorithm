@@ -1,0 +1,18 @@
+import sys
+input = sys.stdin.readline
+
+N = int(input().rstrip())  # 사람 수
+times = list(map(int, input().split()))  # 각 사람이 인출에 걸리는 시간 리스트
+
+# 1. 인출 시간이 짧은 사람부터 처리하기 위해 정렬 (오름차순)
+times.sort()
+
+total = 0      # 전체 사람들의 인출 완료 시간 합
+acc = 0        # 지금까지 대기 + 인출된 누적 시간
+
+# 2. 각 사람 순서대로 인출 — 누적 시간 계산
+for t in times:
+    acc += t       # 이번 사람의 인출까지 걸리는 누적 시간
+    total += acc   # 이 사람이 인출 완료하는 데 걸린 시간 total에 추가
+
+print(total)

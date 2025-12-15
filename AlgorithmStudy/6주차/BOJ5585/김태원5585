@@ -1,0 +1,26 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int n = Integer.parseInt(br.readLine());
+		n = 1000 - n;
+		int answer = 0;
+		answer += n / 500;
+		n %= 500;
+		answer += n / 100;
+		n %= 100;
+		answer += n / 50;
+		n %= 50;
+		answer += n / 10;
+		n %= 10;
+		answer += n / 5;
+		n %= 5;
+		answer += n;
+		System.out.println(answer);
+	}
+
+}

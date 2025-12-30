@@ -6,7 +6,7 @@ def dfs(area, i, j, h, visited):
     for dx, dy in move:
         nx = i + dx
         ny = j + dy
-        if 0 <= nx < n and 0 <= ny < n and area[nx][ny] > h and not visited[nx][ny]:
+        if 0 <= nx < n and 0 <= ny < n and area[nx][ny] >= h and not visited[nx][ny]:
             visited[nx][ny] = True
             dfs(area, nx, ny, h, visited)
 
@@ -17,19 +17,23 @@ for _ in range(n):
 
 move = [(0, -1), (-1, 0), (0, 1), (1, 0)] # 상하좌우로 이동
 max_h = area[0][0] # 지역의 최대 높이
+min_h = area[0][0] # 지역의 최소 높이
 for i in range(len(area)):
     for j in range(len(area[i])):
         if area[i][j] > max_h:
             max_h = area[i][j]
-result = 0 # 안전영역의 개수 중 최대값
+        if area[i][j] < min_h:
+            min_h = area[i][j]
 
-for h in range(max_h, -1, -1):
+# min_h ~ max_h 높이 중 안전영역의 최대값 구하기
+result = 0 # 안전영역의 개수 중 최대값
+for h in range(min_h, max_h + 1):
     visited = [[False] * n for _ in range(n)] # 방문 여부
     count = 0 # 안전영역의 개수
 
     for i in range(len(area)):
         for j in range(len(area[i])):
-            if area[i][j] > h and not visited[i][j]:
+            if area[i][j] >= h and not visited[i][j]:
                 visited[i][j] = True # 방문 체크
                 dfs(area, i, j, h, visited) # 주변 안전지역 탐색
                 count += 1 # 안전영역 개수 세기

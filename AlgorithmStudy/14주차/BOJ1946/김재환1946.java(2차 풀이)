@@ -1,0 +1,37 @@
+import java.io.*;
+import java.util.StringTokenizer;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
+
+        int T = Integer.parseInt(br.readLine());
+        while (T-- > 0) {
+            int N = Integer.parseInt(br.readLine());
+            int[] interview = new int[N + 1];
+
+            // 입력: arr[서류 등수] = 면접 등수
+            for (int i = 0; i < N; i++) {
+                StringTokenizer st = new StringTokenizer(br.readLine());
+                int paper = Integer.parseInt(st.nextToken());
+                int inter = Integer.parseInt(st.nextToken());
+                interview[paper] = inter;
+            }
+
+            int count = 1;                // 서류 1등은 항상 합격
+            int bestInterview = interview[1];
+
+            // 2등부터 N등까지 면접 성적 비교
+            for (int i = 2; i <= N; i++) {
+                if (interview[i] < bestInterview) {
+                    count++;
+                    bestInterview = interview[i];
+                }
+            }
+            sb.append(count).append('\n');
+        }
+
+        System.out.print(sb);
+    }
+}

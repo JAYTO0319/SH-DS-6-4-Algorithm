@@ -1,0 +1,55 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    static final class FastScanner {
+        private final byte[] buffer = new byte[1 << 16];
+        private int ptr = 0, len = 0;
+        private final InputStream in = System.in;
+
+        private int readByte() throws IOException {
+            if (ptr >= len) {
+                len = in.read(buffer);
+                ptr = 0;
+                if (len <= 0) return -1;
+            }
+            return buffer[ptr++];
+        }
+
+        int nextInt() throws IOException {
+            int c, n = 0;
+            while ((c = readByte()) <= ' ') ;
+            do {
+                n = n * 10 + (c - '0');
+            } while ((c = readByte()) > ' ');
+            return n;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+
+        FastScanner fs = new FastScanner();
+        int N = fs.nextInt();
+
+        long[][] dp = new long[N][N];
+        dp[0][0] = 1;
+
+        for (int r = 0; r < N; r++) {
+            for (int c = 0; c < N; c++) {
+                int jump = fs.nextInt();
+                long ways = dp[r][c];
+
+                if (ways == 0 || jump == 0) continue;
+
+                int nc = c + jump;
+                if (nc < N) dp[r][nc] += ways;
+
+                int nr = r + jump;
+                if (nr < N) dp[nr][c] += ways;
+            }
+        }
+
+        System.out.print(dp[N - 1][N - 1]);
+    }
+}
